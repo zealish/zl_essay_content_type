@@ -1,0 +1,44 @@
+<odoo>
+  <template id="lesson_content_essay" name="Lesson: Essay content">
+    <div class="o_wslides_essay col" t-att-data-slide-id="slide.id" t-att-data-public="'1' if request.env.user._is_public() else '0'">
+      <article class="o_wslides_essay_slide">
+        <h3 t-esc="slide.name"/>
+        <div class="alert alert-danger js_essay_error d-none" role="alert"/>
+        <t t-if="request.env.user._is_public()">
+          <a href="/web/login" class="btn btn-primary">Sign in to start the essay</a>
+        </t>
+        <t t-else="">
+          <div class="js_essay_intro">
+            <p>Answer one question at a time. Each question has its own timer. Moving to another question pauses the remaining time.</p>
+            <button type="button" class="btn btn-primary js_essay_start">Start Essay</button>
+          </div>
+          <div class="alert alert-success js_essay_finished d-none">All answers have been submitted for instructor review.</div>
+          <div class="js_essay_workspace d-none">
+            <t t-foreach="slide.essay_ids" t-as="essay" t-foreach-index="essay_index">
+              <section class="o_wslides_essay_item d-none" t-att-data-essay-id="essay.id">
+                <h4>Question <t t-esc="essay_index + 1"/> of <t t-esc="len(slide.essay_ids)"/></h4>
+                <div class="o_wslides_essay_prompt mb-4" t-out="essay.question"/>
+                <p class="text-muted"><t t-esc="essay.time_limit"/> minutes · Maximum <t t-esc="essay.max_score"/> points</p>
+                <div class="alert alert-info d-flex justify-content-between"><span>Time remaining</span><strong class="js_essay_timer"/></div>
+                <label class="form-label" t-att-for="'essay-answer-%s' % essay.id">Your answer</label>
+                <textarea class="form-control js_essay_answer" rows="14" t-att-id="'essay-answer-%s' % essay.id"/>
+                <div class="text-muted small mt-2">Answers are saved automatically and when you navigate.</div>
+                <div class="alert alert-warning js_essay_expired d-none mt-3">Time for this question has expired. Your saved answer is locked.</div>
+              </section>
+            </t>
+            <div class="d-flex justify-content-between mt-4">
+              <button type="button" class="btn btn-secondary js_essay_prev">Previous</button>
+              <button type="button" class="btn btn-primary js_essay_next">Next</button>
+              <button type="button" class="btn btn-primary js_essay_finish">Submit All Answers</button>
+            </div>
+          </div>
+        </t>
+      </article>
+    </div>
+  </template>
+  <template id="slide_main_essay" inherit_id="website_slides.slide_content_detailed">
+    <xpath expr="//div[@id='quiz_container']" position="attributes"><attribute name="t-if">slide.slide_category != 'essay'</attribute></xpath>
+    <xpath expr="//div[@id='quiz_container']" position="after"><div id="essay_container" t-if="slide.slide_category == 'essay'"><t t-call="zl_essay_content_type.lesson_content_essay"/></div></xpath>
+  </template>
+  <template id="essay_result" name="Essay Result"><t t-call="website.layout"><div class="container mt-5"><h1 t-esc="attempt.slide_id.name"/><p>Status: <t t-esc="dict(attempt._fields['state'].selection).get(attempt.state)"/></p><pre t-esc="attempt.answer or ''"/><div t-if="attempt.state == 'graded'"><p>Score: <t t-esc="attempt.score"/> / <t t-esc="attempt.essay_id.max_score"/></p><p t-esc="attempt.feedback or ''"/></div></div></t></template>
+</odoo>

@@ -1,0 +1,24 @@
+<odoo>
+  <record id="view_essay_form" model="ir.ui.view">
+    <field name="name">slide.slide.essay.form</field><field name="model">slide.slide.essay</field>
+    <field name="arch" type="xml"><form><sheet><group><field name="sequence"/><field name="question" widget="html"/><field name="time_limit"/><field name="max_score"/><field name="passing_score"/></group></sheet></form></field>
+  </record>
+  <record id="view_essay_list" model="ir.ui.view">
+    <field name="name">slide.slide.essay.list</field><field name="model">slide.slide.essay</field>
+    <field name="arch" type="xml"><list><field name="sequence" widget="handle"/><field name="question_preview"/><field name="time_limit"/><field name="max_score"/><field name="passing_score"/></list></field>
+  </record>
+  <record id="view_essay_attempt_list" model="ir.ui.view">
+    <field name="name">slide.slide.essay.attempt.list</field><field name="model">slide.slide.essay.attempt</field>
+    <field name="arch" type="xml"><list create="0"><field name="slide_id"/><field name="user_id"/><field name="started_at"/><field name="submitted_at"/><field name="state"/><field name="score"/></list></field>
+  </record>
+  <record id="view_essay_attempt_search" model="ir.ui.view">
+    <field name="name">slide.slide.essay.attempt.search</field><field name="model">slide.slide.essay.attempt</field>
+    <field name="arch" type="xml"><search><field name="slide_id"/><field name="user_id"/><filter name="progress" string="In Progress" domain="[('state','=','in_progress')]"/><filter name="submitted" string="Submitted" domain="[('state','=','submitted')]"/><filter name="graded" string="Graded" domain="[('state','=','graded')]"/></search></field>
+  </record>
+  <record id="view_essay_attempt_form" model="ir.ui.view">
+    <field name="name">slide.slide.essay.attempt.form</field><field name="model">slide.slide.essay.attempt</field>
+    <field name="arch" type="xml"><form create="0"><header><button name="action_grade" type="object" string="Save Grade" class="btn-primary" invisible="state not in ('submitted', 'graded')"/><field name="state" widget="statusbar"/></header><sheet><group><field name="slide_id" readonly="1"/><field name="user_id" readonly="1"/><field name="started_at"/><field name="expires_at"/><field name="submitted_at"/><field name="duration"/></group><group string="Essay Answer"><field name="answer" readonly="1" nolabel="1"/></group><group string="Grading"><field name="score" readonly="state not in ('submitted', 'graded')"/><field name="feedback" readonly="state not in ('submitted', 'graded')"/></group></sheet></form></field>
+  </record>
+  <record id="action_essay_attempts" model="ir.actions.act_window"><field name="name">Essay Submissions</field><field name="res_model">slide.slide.essay.attempt</field><field name="view_mode">list,form</field></record>
+  <menuitem id="menu_essay_attempts" name="Essay Submissions" parent="website_slides.website_slides_menu_root" action="action_essay_attempts" groups="website_slides.group_website_slides_officer" sequence="35"/>
+</odoo>

@@ -1,0 +1,17 @@
+<odoo>
+  <record id="view_slide_form_essay" model="ir.ui.view">
+    <field name="name">slide.slide.form.essay</field>
+    <field name="model">slide.slide</field>
+    <field name="inherit_id" ref="website_slides.view_slide_slide_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='slide_category']" position="after">
+        <field name="is_published" string="Published" widget="boolean_toggle"/>
+      </xpath>
+      <xpath expr="//page[@name='quiz']" position="after">
+        <page name="essay" string="Essay" invisible="slide_category != 'essay'">
+          <field name="essay_ids" context="{'default_slide_id': id}" nolabel="1" mode="list,form" create="1"/>
+        </page>
+      </xpath>
+    </field>
+  </record>
+</odoo>

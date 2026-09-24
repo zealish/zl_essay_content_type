@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_slide_essay_officer,slide.essay officer,model_slide_slide_essay,website_slides.group_website_slides_officer,1,1,1,1
+access_slide_essay_admin,slide.essay admin,model_slide_slide_essay,base.group_system,1,1,1,1
+access_essay_attempt_user,essay attempt user,model_slide_slide_essay_attempt,base.group_user,1,0,1,0
+access_essay_attempt_portal,essay attempt portal,model_slide_slide_essay_attempt,base.group_portal,1,0,1,0
+access_essay_attempt_officer,essay attempt officer,model_slide_slide_essay_attempt,website_slides.group_website_slides_officer,1,1,1,1
+access_essay_attempt_admin,essay attempt admin,model_slide_slide_essay_attempt,base.group_system,1,1,1,1
